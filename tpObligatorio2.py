@@ -1,23 +1,6 @@
-# Crear una aplicación de línea de comandos para administrar una lista de tareas. La aplicación permitirá al usuario agregar, ver, actualizar y eliminar tareas.
-
-# Requisitos:
-
-# Utiliza TinyDB para almacenar las tareas en una base de datos.
-
-# Crea una clase Tarea que tenga las siguientes propiedades: id, titulo, descripción, estado, creada y actualizada.
-
-# Crea una clase Administrador de Tareas (AdminTarea) que maneje la interacción con la base de datos TinyDB. La clase debe tener los siguientes métodos:
-
-# agregar_tarea(tarea: Tarea) -> int: Agrega una nueva tarea a la base de datos y devuelve su ID.
-# traer_tarea(tarea_id: int) -> Task: Obtiene una tarea de la base de datos según su ID y devuelve una instancia de la clase Tarea.
-# actualizar_estado_tarea(tarea_id: int, estado: str): Actualiza el estado de una tarea en la base de datos según su ID.
-# eliminar_tarea(tarea_id: int): Elimina una tarea de la base de datos según su ID.
-# traer_todas_tareas() -> List[Tarea]: Obtiene todas las tareas de la base de datos y devuelve una lista de instancias de la clase Task.
-
 from typing import List
 from tinydb import TinyDB, Query
 import datetime
-from datetime import datetime
 import json
 
 
@@ -48,7 +31,7 @@ class Tarea(ModeloBase):
         return json.dumps(self.to_dict())
     
     def actualizar_fecha_actualizacion(self):
-        self.actualizada = datetime.now().strftime('%Y-%m-%d')
+        self.actualizada = datetime.datetime.now().strftime('%Y-%m-%d')
 
 
 class AdminTarea:
@@ -85,56 +68,74 @@ class AdminTarea:
         tareas = list(map(Tarea.from_dict, tareas_dicts))
         return tareas
 
+def mostrar_menu():
+    print("Selecciona una opción:")
+    print("1. Agregar tarea")
+    print("2. Agregar varias tareas")
+    print("3. Traer tarea")
+    print("4. Actualizar estado de tarea")
+    print("5. Eliminar tarea")
+    print("6. Traer todas las tareas")
+    print("7. Salir")
+
+def input_valido(mensaje: str, predeterminado: str = "") -> str:
+    valor = input(mensaje)
+    return valor if valor.strip() != "" else predeterminado
 
 if __name__ == "__main__":
-    db_path = "dbb.json"
+    db_path = "tareas.json"
     admin_tarea = AdminTarea(db_path)
 
     corriendo = True
     while corriendo:
-        print("1. Agregar tarea")
-        print("2. Ver tarea")
-        print("3. Actualizar tarea")
-        print("4. Eliminar tarea")
-        print("5. Ver todas las tareas")
-        print("6. Salir")
-        opcion = input("Ingrese una opcion: ")
-        
+        mostrar_menu()
+        opcion = input_valido("Ingrese una opción: ")
+
         if opcion == "1":
-            titulo = input("Ingrese el titulo: ")
-            descripcion = input("Ingrese la descripcion: ")
-            estado = input("Ingrese el estado: ")
-            creada = input("Ingrese la fecha de creacion (YYYY-MM-DD): ")
-            actualizada = input("Ingrese la fecha de actualizacion (YYYY-MM-DD): ")
-            
-            if not all([titulo, descripcion, estado, creada, actualizada]):
+            titulo = input_valido("Ingrese el título de la tarea: ")
+            descripcion = input_valido("Ingrese la descripción de la tarea: ")
+            estado = input_valido("Ingrese el estado de la tarea: ")
+
+            if not all([titulo, descripcion, estado]):
                 print("Todos los campos son requeridos")
                 continue
-            
-            tarea = Tarea(titulo, descripcion, estado, creada, actualizada)
+
+            tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now().strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
             tarea_id = admin_tarea.agregar_tarea(tarea)
-            print(f"La tarea se agrego con el id {tarea_id}")
-            
+            print(f"Tarea agregada con ID {tarea_id}")
+
         elif opcion == "2":
-            tarea_id = int(input("Ingrese el id de la tarea: "))
+            tareas = []
+            cantidad_tareas = int(input_valido("Ingrese la cantidad de tareas que desea agregar: "))
+            for i in range(cantidad_tareas):
+                titulo = input_valido(f"Ingrese el título de la tarea {i+1}: ")
+                descripcion = input_valido(f"Ingrese la descripción de la tarea {i+1}: ")
+                estado = input_valido(f"Ingrese el estado de la tarea {i+1}: ")
+                tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now().strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
+                tareas.append(tarea)
+            tarea_ids = admin_tarea.agregar_tareas(tareas)
+            print(f"Se agregaron las tareas con IDs {tarea_ids}")
+
+        elif opcion == "3":
+            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea traer: "))
             tarea = admin_tarea.traer_tarea(tarea_id)
             if tarea:
-                print(tarea.to_json())
+                print(tarea.to_dict())
             else:
                 print(f"No se encontró ninguna tarea con el id {tarea_id}")
-            
-        elif opcion == "3":
-            tarea_id = int(input("Ingrese el id de la tarea: "))
-            estado = input("Ingrese el nuevo estado: ")
-            admin_tarea.actualizar_estado_tarea(tarea_id, estado)
-            print("La tarea se actualizó correctamente")
-            
+
         elif opcion == "4":
-            tarea_id = int(input("Ingrese el id de la tarea: "))
-            admin_tarea.eliminar_tarea(tarea_id)
-            print("La tarea se eliminó correctamente")
-            
+            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea actualizar: "))
+            estado = input_valido("Ingrese el nuevo estado de la tarea: ")
+            admin_tarea.actualizar_estado_tarea(tarea_id, estado)
+            print("Tarea actualizada")
+
         elif opcion == "5":
+            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea eliminar: "))
+            admin_tarea.eliminar_tarea(tarea_id)
+            print("Tarea eliminada")
+
+        elif opcion == "6":
             tareas = admin_tarea.traer_todas_tareas()
             if not tareas:
                 print("No hay tareas")
@@ -142,12 +143,12 @@ if __name__ == "__main__":
                 continue
             for tarea in tareas:
                 print(tarea.to_json())
-                
-        elif opcion == "6":
-            print("Gracias por usar el programa")
+
+        elif opcion == "7":
+            print("Saliendo...")
             corriendo = False
-            
+
         else:
-            print("Opción inválida")
+            print("Opción inválida. Intente de nuevo.")
         
-        print()  # Imprimir una línea en blanco para separar los mensajes de las diferentes iteraciones
+        print() # Salto de línea
