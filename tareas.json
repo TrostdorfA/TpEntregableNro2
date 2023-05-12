@@ -1,1 +1,67 @@
-{"_default": {"1": {"titulo": "Romper PC", "descripcion": "Desarmar y romper todo", "estado": "Pendiente", "creada": "2023-05-04", "actualizada": "2023-05-04"}, "2": {"titulo": "Limpieza", "descripcion": "Mantenimiento de Notebook", "estado": "En proceso", "creada": "2023-05-04", "actualizada": "2023-05-04"}, "3": {"titulo": "Probando tarea sin Desc", "descripcion": "", "estado": "Haciendo", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "4": {"titulo": "PC", "descripcion": "Limpieza de pc completa", "estado": "Pendiente", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "5": {"titulo": "Arreglar", "descripcion": "Arreglo de pc super bien", "estado": "Procesando", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "6": {"titulo": "ClaseProfe", "descripcion": "Clase numero 8900", "estado": "Realizando", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "7": {"titulo": "Lol", "descripcion": "Partida en la grieta del invocador", "estado": "Jugando", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "8": {"titulo": "Cocinar", "descripcion": "Bajala Con el pecho Pele", "estado": "Que definicion", "creada": "2023-05-11", "actualizada": "2023-05-11"}, "9": {"titulo": "Ac\u00e9nt\u00f3", "descripcion": "", "estado": "S\u00f3lid\u00f3", "creada": "2023-05-11", "actualizada": "2023-05-11"}}}
+{
+  "_default": {
+    "1": {
+      "titulo": "Romper PC",
+      "descripcion": "Desarmar y romper todo",
+      "estado": "Pendiente",
+      "creada": "2023-05-04",
+      "actualizada": "2023-05-04"
+    },
+    "2": {
+      "titulo": "Limpieza",
+      "descripcion": "Mantenimiento de Notebook",
+      "estado": "En proceso",
+      "creada": "2023-05-04",
+      "actualizada": "2023-05-04"
+    },
+    "3": {
+      "titulo": "Probando tarea sin Desc",
+      "descripcion": "",
+      "estado": "Haciendo",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "4": {
+      "titulo": "PC",
+      "descripcion": "Limpieza de pc completa",
+      "estado": "Pendiente",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "5": {
+      "titulo": "Arreglar",
+      "descripcion": "Arreglo de pc super bien",
+      "estado": "Procesando",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "6": {
+      "titulo": "ClaseProfe",
+      "descripcion": "Clase numero 8900",
+      "estado": "Realizando",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "7": {
+      "titulo": "Lol",
+      "descripcion": "Partida en la grieta del invocador",
+      "estado": "Jugando",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "8": {
+      "titulo": "Cocinar",
+      "descripcion": "Bajala Con el pecho Pele",
+      "estado": "Que definicion",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    },
+    "9": {
+      "titulo": "Ac\u00e9nt\u00f3",
+      "descripcion": "",
+      "estado": "S\u00f3lid\u00f3",
+      "creada": "2023-05-11",
+      "actualizada": "2023-05-11"
+    }
+  }
+}

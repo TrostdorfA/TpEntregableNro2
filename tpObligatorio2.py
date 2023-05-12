@@ -18,7 +18,7 @@ class Tarea(ModeloBase):
         self.estado = estado
         self.creada = creada
         self.actualizada = actualizada
-    
+
     def to_dict(self):
         return {
             "titulo": self.titulo,
@@ -30,7 +30,7 @@ class Tarea(ModeloBase):
 
     def to_json(self):
         return json.dumps(self.to_dict())
-    
+
     def actualizar_fecha_actualizacion(self):
         self.actualizada = datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -52,8 +52,10 @@ class AdminTarea:
     def traer_tarea(self, tarea_id: int) -> Tarea:
         tarea_dict = self.db.get(doc_id=tarea_id)
         tarea = PrettyTable()
-        tarea.field_names = ["ID", "Título", "Descripción", "Estado", "Creada", "Actualizada"]
-        tarea.add_row([tarea_id, tarea_dict["titulo"], tarea_dict["descripcion"], tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
+        tarea.field_names = ["ID", "Título",
+                             "Descripción", "Estado", "Creada", "Actualizada"]
+        tarea.add_row([tarea_id, tarea_dict["titulo"], tarea_dict["descripcion"],
+                      tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
         return tarea
 
     def actualizar_estado_tarea(self, tarea_id: int, estado: str):
@@ -69,10 +71,13 @@ class AdminTarea:
     def traer_todas_tareas(self) -> List[Tarea]:
         tareas_dicts = self.db.all()
         tareas = PrettyTable()
-        tareas.field_names = ["ID", "Título", "Descripción", "Estado", "Creada", "Actualizada"]
+        tareas.field_names = ["ID", "Título",
+                              "Descripción", "Estado", "Creada", "Actualizada"]
         for tarea_dict in tareas_dicts:
-            tareas.add_row([tarea_dict.doc_id, tarea_dict["titulo"], tarea_dict["descripcion"], tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
+            tareas.add_row([tarea_dict.doc_id, tarea_dict["titulo"], tarea_dict["descripcion"],
+                           tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
         return tareas
+
 
 def mostrar_menu():
     print("Selecciona una opción:")
@@ -84,9 +89,11 @@ def mostrar_menu():
     print("6. Traer todas las tareas")
     print("7. Salir")
 
+
 def input_valido(mensaje: str, predeterminado: str = "") -> str:
     valor = input(mensaje)
     return valor if valor.strip() != "" else predeterminado
+
 
 if __name__ == "__main__":
     db_path = "tareas.json"
@@ -107,24 +114,29 @@ if __name__ == "__main__":
                 print("Todos los campos son requeridos")
                 continue
 
-            tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now().strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
+            tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now(
+            ).strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
             tarea_id = admin_tarea.agregar_tarea(tarea)
             print(f"Tarea agregada con ID {tarea_id}")
 
         elif opcion == "2":
             tareas = []
-            cantidad_tareas = int(input_valido("Ingrese la cantidad de tareas que desea agregar: "))
+            cantidad_tareas = int(input_valido(
+                "Ingrese la cantidad de tareas que desea agregar: "))
             for i in range(cantidad_tareas):
                 titulo = input_valido(f"Ingrese el título de la tarea {i+1}: ")
-                descripcion = input_valido(f"Ingrese la descripción de la tarea {i+1}: ")
+                descripcion = input_valido(
+                    f"Ingrese la descripción de la tarea {i+1}: ")
                 estado = input_valido(f"Ingrese el estado de la tarea {i+1}: ")
-                tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now().strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
+                tarea = Tarea(titulo=titulo, descripcion=descripcion, estado=estado, creada=datetime.datetime.now(
+                ).strftime('%Y-%m-%d'), actualizada=datetime.datetime.now().strftime('%Y-%m-%d'))
                 tareas.append(tarea)
             tarea_ids = admin_tarea.agregar_tareas(tareas)
             print(f"Se agregaron las tareas con IDs {tarea_ids}")
 
         elif opcion == "3":
-            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea traer: "))
+            tarea_id = int(input_valido(
+                "Ingrese el ID de la tarea que desea traer: "))
             tarea = admin_tarea.traer_tarea(tarea_id)
             if tarea:
                 print(tarea)
@@ -132,13 +144,15 @@ if __name__ == "__main__":
                 print(f"No existe la tarea con ID {tarea_id}")
 
         elif opcion == "4":
-            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea actualizar: "))
+            tarea_id = int(input_valido(
+                "Ingrese el ID de la tarea que desea actualizar: "))
             estado = input_valido("Ingrese el nuevo estado de la tarea: ")
             admin_tarea.actualizar_estado_tarea(tarea_id, estado)
             print("Tarea actualizada")
 
         elif opcion == "5":
-            tarea_id = int(input_valido("Ingrese el ID de la tarea que desea eliminar: "))
+            tarea_id = int(input_valido(
+                "Ingrese el ID de la tarea que desea eliminar: "))
             admin_tarea.eliminar_tarea(tarea_id)
             print("Tarea eliminada")
 
@@ -156,5 +170,5 @@ if __name__ == "__main__":
 
         else:
             print("Opción inválida. Intente de nuevo.")
-        
-        print() # Salto de línea
+
+        print()  # Salto de línea
