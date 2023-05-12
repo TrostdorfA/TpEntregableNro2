@@ -1,5 +1,6 @@
 from typing import List
 from tinydb import TinyDB, Query
+from prettytable import PrettyTable
 import datetime
 import json
 
@@ -50,7 +51,9 @@ class AdminTarea:
 
     def traer_tarea(self, tarea_id: int) -> Tarea:
         tarea_dict = self.db.get(doc_id=tarea_id)
-        tarea = Tarea.from_dict(tarea_dict)
+        tarea = PrettyTable()
+        tarea.field_names = ["ID", "Título", "Descripción", "Estado", "Creada", "Actualizada"]
+        tarea.add_row([tarea_id, tarea_dict["titulo"], tarea_dict["descripcion"], tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
         return tarea
 
     def actualizar_estado_tarea(self, tarea_id: int, estado: str):
@@ -65,7 +68,10 @@ class AdminTarea:
 
     def traer_todas_tareas(self) -> List[Tarea]:
         tareas_dicts = self.db.all()
-        tareas = list(map(Tarea.from_dict, tareas_dicts))
+        tareas = PrettyTable()
+        tareas.field_names = ["ID", "Título", "Descripción", "Estado", "Creada", "Actualizada"]
+        for tarea_dict in tareas_dicts:
+            tareas.add_row([tarea_dict.doc_id, tarea_dict["titulo"], tarea_dict["descripcion"], tarea_dict["estado"], tarea_dict["creada"], tarea_dict["actualizada"]])
         return tareas
 
 def mostrar_menu():
@@ -89,6 +95,7 @@ if __name__ == "__main__":
     corriendo = True
     while corriendo:
         mostrar_menu()
+        print()
         opcion = input_valido("Ingrese una opción: ")
 
         if opcion == "1":
@@ -120,9 +127,9 @@ if __name__ == "__main__":
             tarea_id = int(input_valido("Ingrese el ID de la tarea que desea traer: "))
             tarea = admin_tarea.traer_tarea(tarea_id)
             if tarea:
-                print(tarea.to_dict())
+                print(tarea)
             else:
-                print(f"No se encontró ninguna tarea con el id {tarea_id}")
+                print(f"No existe la tarea con ID {tarea_id}")
 
         elif opcion == "4":
             tarea_id = int(input_valido("Ingrese el ID de la tarea que desea actualizar: "))
@@ -141,8 +148,7 @@ if __name__ == "__main__":
                 print("No hay tareas")
                 print()
                 continue
-            for tarea in tareas:
-                print(tarea.to_json())
+            print(tareas)
 
         elif opcion == "7":
             print("Saliendo...")
