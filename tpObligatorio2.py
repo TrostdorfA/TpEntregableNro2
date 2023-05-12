@@ -103,7 +103,7 @@ if __name__ == "__main__":
             descripcion = input_valido("Ingrese la descripción de la tarea: ")
             estado = input_valido("Ingrese el estado de la tarea: ")
 
-            if not all([titulo, descripcion, estado]):
+            if not all([titulo, estado]):
                 print("Todos los campos son requeridos")
                 continue
 
